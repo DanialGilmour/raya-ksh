@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stellar Affection</title>
+
+<style>
+:root {
+  --primary: #f0f0ff; /* faint icy blue-white for letter */
+  --bg-gradient: radial-gradient(circle at 50% 10%, #2f1d5e, #130a2a, #05020c);
+  --envelope-light: #522d80; /* Envelope Back */
+  --envelope-mid: #683fb5;   /* Envelope Flap */
+  --envelope-dark: #3f1e6b;  /* Envelope Front */
+  --seal: #d4e0e8;           /* Silver/Moon Seal */
+  --text: #2c1a4d;
+  --shadow: rgba(0, 0, 0, 0.6);
+}
+
+/* PAGE BACKGROUND */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-gradient);
+  overflow: hidden;
+  font-family: 'Georgia', serif;
+}
+
+/* === 🌌 Floating Nebula Dust / Stars === */
+.stardust {
+  position: absolute;
+  background: radial-gradient(circle, #fff, rgba(255,255,255,0.2), transparent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: drift 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: blur(2px) drop-shadow(0 0 10px #dda0dd);
+}
+
+@keyframes drift {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5) rotate(0deg);
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(150px, -250px) scale(2) rotate(180deg);
+  }
+}
+
+/* === 🌠 Shooting Star === */
+.shooting-star {
+  position: absolute;
+  top: 10%;
+  left: 80%;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, #fff, transparent);
+  opacity: 0;
+  transform: rotate(-45deg);
+  animation: shoot 6s infinite reverse;
+}
+
+@keyframes shoot {
+  0% { transform: translateX(300px) translateY(-300px) rotate(-45deg); opacity: 1; }
+  15% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; }
+  100% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; }
+}
+
+/* ENVELOPE CONTAINER */
+.container {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  animation: showUp 2.5s ease forwards;
+  animation-delay: 0.5s;
+  color: #cca8e9;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-align: center;
+  gap: 20px;
+}
+
+@keyframes showUp {
+  to { opacity: 1; }
+}
+
+/* ENVELOPE */
+.envelope-wrapper {
+  position: relative;
+  background: var(--envelope-light);
+  box-shadow: 0 15px 50px var(--shadow);
+  border-radius: 6px;
+}
+
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 240px;
+}
+
+/* FLAP */
+.envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top: 135px solid var(--envelope-mid);
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+/* BODY */
+.envelope::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 135px solid transparent;
+  border-left: 160px solid var(--envelope-dark);
+  border-right: 160px solid var(--envelope-dark);
+  border-bottom: 105px solid var(--envelope-dark);
+  z-index: 2;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+/* LETTER */
+.letter {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 72%;
+  height: 96%;
+  box-sizing: border-box;
+  background: var(--primary);
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  padding: 20px;
+  text-align: center;
+  transition: all 1s ease-in-out;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid #cca8e9;
+}
+
+.letter .text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+h4.greeting {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #522d80;
+  margin-top: 5px;
+  font-size: 20px;
+  border-bottom: 1px dashed #cca8e9;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+/* SILVER SEAL */
+.seal {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(135deg, #fff, var(--seal));
+  border-radius: 50%;
+  z-index: 4;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  border: 2px solid #fff;
+}
+
+.seal:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 8px 25px rgba(230, 200, 255, 0.4);
+}
+
+.seal::after {
+  content: "🪐";
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+}
+
+/* OPEN STATES */
+.flap .envelope::before {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+.flap .letter {
+  bottom: 110px;
+  transform: translateX(-50%) scale(1.15);
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+}
+.flap .seal {
+  transform: translateX(-50%) translateY(40px) scale(0);
+  opacity: 0;
+}
+
+/* FULLSCREEN LETTER */
+.letter.open-letter {
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  width: 80vw;
+  max-width: 550px;
+  height: auto;
+  min-height: 65vh;
+  background: var(--primary);
+  padding: 50px 40px;
+  z-index: 999;
+  box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  overflow-y: auto;
+  border-radius: 8px;
+  transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* bouncy pop */
+  animation: fadeIn 0.4s ease forwards;
+  border: 5px solid #683fb5;
+}
+
+.letter.open-letter::before {
+  content: "✦ ✧ ✦";
+  font-size: 24px;
+  color: #cca8e9;
+  display: block;
+  margin-bottom: 15px;
+  text-align: center;
+  letter-spacing: 5px;
+}
+
+.letter.open-letter::after {
+  content: "Close message ✕";
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  font-size: 14px;
+  color: #777;
+  font-family: sans-serif;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.letter.open-letter:hover::after {
+  color: #2c1a4d;
+}
+
+</style>
+</head>
+<body>
+
+<!-- 🌌 Stardust -->
+<div class="stardust" style="width: 30px; height: 30px; bottom: 15%; left: 15%; animation-delay: 0s;"></div>
+<div class="stardust" style="width: 50px; height: 50px; bottom: 30%; left: 70%; animation-delay: 3s;"></div>
+<div class="stardust" style="width: 20px; height: 20px; bottom: 50%; left: 20%; animation-delay: 6s;"></div>
+<div class="stardust" style="width: 40px; height: 40px; bottom: 10%; left: 85%; animation-delay: 1s;"></div>
+<div class="stardust" style="width: 25px; height: 25px; bottom: 60%; left: 80%; animation-delay: 4.5s;"></div>
+<div class="stardust" style="width: 60px; height: 60px; bottom: 40%; left: 10%; animation-delay: 8s;"></div>
+
+<!-- 🌠 Shooting Star -->
+<div class="shooting-star"></div>
+
+<!-- Envelope and Letter -->
+<div class="container">
+  <i>The cosmos called, and left a note...</i><br/>(Click the planetary seal)
+  
+  <div class="envelope-wrapper">
+    <div class="envelope">
+      <div class="letter">
+        <p style="color: #999; font-size: 12px; margin-top: 10px;">[Open Letter]</p>
+        <div class="text">
+          <h4 class="greeting">To My Favorite Star</h4>
+          <p>
+            In a universe expanding at the speed of light, filled with billions of galaxies and endless celestial bodies, our orbits somehow managed to cross.
+          </p>
+          <p>
+            You have a gravitational pull that makes my world revolve around your radiance. Your presence is like a supernova—bright, explosive, and impossible to ignore.
+          </p>
+          <br>
+          <p>Always looking up,</p>
+          <p><em>—Your Space Explorer</em></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="seal" title="Break Seal"></div>
+  </div>
+</div>
+
+<script>
+const seal = document.querySelector(".seal");
+const envelopeWrapper = document.querySelector(".envelope-wrapper");
+const letter = document.querySelector(".letter");
+
+seal.addEventListener("click", () => {
+  envelopeWrapper.classList.toggle("flap");
+});
+
+letter.addEventListener("click", () => {
+  if (envelopeWrapper.classList.contains("flap")) {
+    letter.classList.toggle("open-letter");
+  }
+});
+</script>
+
+</body>
+</html>

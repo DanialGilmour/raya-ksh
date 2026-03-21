@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warkah Syawal</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #d0e6b6;
+      --bg-gradient: radial-gradient(ellipse at 50% 0%, #1a4a2a, #0d2e19, #030f08);
+      --envelope-light: #1e6b3a;
+      --envelope-mid: #2ea04a;
+      --envelope-dark: #165c2e;
+      --seal: #d4af37;
+      --text: #0d2e19;
+      --shadow: rgba(0, 0, 0, 0.55);
+      --accent: #d4af37;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-gradient);
+      overflow: hidden;
+      font-family: 'Lora', serif;
+    }
+
+    /* === 🪔 Floating Lanterns === */
+    .lantern {
+      position: absolute;
+      top: 110%;
+      font-size: 26px;
+      opacity: 0;
+      animation: riseUp 14s ease-in infinite;
+      user-select: none;
+      filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
+    }
+
+    @keyframes riseUp {
+      0% {
+        opacity: 0;
+        transform: translateY(0) rotate(0deg) translateX(0);
+      }
+
+      10% {
+        opacity: 0.9;
+      }
+
+      50% {
+        opacity: 0.8;
+        transform: translateY(-55vh) rotate(8deg) translateX(30px);
+      }
+
+      90% {
+        opacity: 0.4;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-115vh) rotate(-6deg) translateX(-20px);
+      }
+    }
+
+    /* === Soft Moonlight Glow === */
+    .moon-glow {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.12), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: moonPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes moonPulse {
+      0% {
+        opacity: 0.8;
+        transform: translateX(-50%) scale(1);
+      }
+
+      100% {
+        opacity: 0.4;
+        transform: translateX(-50%) scale(1.2);
+      }
+    }
+
+    /* === Firefly Motes === */
+    .mote {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(212, 175, 55, 0.5);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
+      animation: driftMote 20s linear infinite;
+    }
+
+    @keyframes driftMote {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: translateY(-10vh) translateX(25px);
+        opacity: 0;
+      }
+    }
+
+    /* === ENVELOPE CONTAINER === */
+    .container {
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      animation: showUp 2.5s ease forwards;
+      animation-delay: 0.6s;
+      color: #b8d8b0;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .container p {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 16px;
+      letter-spacing: 1px;
+      opacity: 0.85;
+    }
+
+    .container span {
+      font-size: 13px;
+      opacity: 0.55;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @keyframes showUp {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* === ENVELOPE === */
+    .envelope-wrapper {
+      position: relative;
+      background: var(--envelope-light);
+      box-shadow:
+        0 20px 60px var(--shadow),
+        inset 0 0 40px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+
+    .envelope {
+      position: relative;
+      width: 320px;
+      height: 240px;
+    }
+
+    /* Decorative inner seam lines */
+    .envelope-wrapper .seam-left,
+    .envelope-wrapper .seam-right {
+      position: absolute;
+      bottom: 0;
+      width: 1px;
+      height: 60%;
+      background: rgba(255, 255, 255, 0.07);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .envelope-wrapper .seam-left {
+      left: 50%;
+      transform: translateX(-80px) rotate(35deg);
+      transform-origin: bottom;
+    }
+
+    .envelope-wrapper .seam-right {
+      right: 50%;
+      transform: translateX(80px) rotate(-35deg);
+      transform-origin: bottom;
+    }
+
+    /* FLAP */
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-top: 135px solid var(--envelope-mid);
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      transform-origin: top center;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 3;
+    }
+
+    /* BODY */
+    .envelope::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-top: 135px solid transparent;
+      border-left: 160px solid var(--envelope-dark);
+      border-right: 160px solid var(--envelope-dark);
+      border-bottom: 105px solid var(--envelope-dark);
+      z-index: 2;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+
+    /* === LETTER === */
+    .letter {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 72%;
+      height: 96%;
+      box-sizing: border-box;
+      background: var(--primary);
+      border-radius: 3px;
+      box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
+      padding: 16px 14px;
+      text-align: center;
+      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+    }
+
+    .letter .hint-text {
+      color: #4a8a5a;
+      font-size: 11px;
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    /* === WAX SEAL === */
+    .seal {
+      position: absolute;
+      top: 118px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 54px;
+      height: 54px;
+      background: radial-gradient(circle at 38% 32%, #f0da80, var(--seal), #8b6914);
+      border-radius: 50%;
+      z-index: 4;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s, opacity 0.4s ease 0.4s;
+      box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.55),
+        inset 0 2px 4px rgba(255, 255, 255, 0.25),
+        0 0 0 3px rgba(180, 150, 50, 0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .seal:hover {
+      transform: translateX(-50%) scale(1.12) rotate(-8deg);
+      box-shadow: 0 8px 28px rgba(212, 175, 55, 0.6);
+    }
+
+    .seal::after {
+      content: "🌙";
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    /* === OPEN STATES === */
+    .flap .envelope::before {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    .flap .letter {
+      bottom: 115px;
+      transform: translateX(-50%) scale(1.15);
+      box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .flap .seal {
+      transform: translateX(-50%) translateY(45px) scale(0);
+      opacity: 0;
+    }
+
+    /* === FULLSCREEN LETTER === */
+    .letter.open-letter {
+      position: fixed !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) !important;
+      width: 82vw;
+      max-width: 540px;
+      height: auto;
+      min-height: 70vh;
+      max-height: 92vh;
+      background: var(--primary);
+      background-image:
+        repeating-linear-gradient(0deg,
+          transparent,
+          transparent 29px,
+          rgba(30, 107, 58, 0.08) 29px,
+          rgba(30, 107, 58, 0.08) 30px);
+      padding: 55px 42px 42px;
+      z-index: 999;
+      box-shadow: 0 0 100px rgba(0, 0, 0, 0.7), 0 0 0 5px var(--accent);
+      overflow-y: auto;
+      border-radius: 4px;
+      transition: all 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: parchmentOpen 0.5s ease forwards;
+      border: none;
+      text-align: left;
+    }
+
+    @keyframes parchmentOpen {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scaleY(0.6);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scaleY(1);
+      }
+    }
+
+    .letter.open-letter .hint-text {
+      display: none;
+    }
+
+    .letter.open-letter::before {
+      content: "Selamat Hari Raya Aidilfitri";
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: #1e6b3a;
+      display: block;
+      margin-bottom: 4px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .letter.open-letter::after {
+      content: "✕  Close";
+      position: fixed;
+      top: 18px;
+      right: 28px;
+      font-size: 13px;
+      color: #6a9a7a;
+      font-family: 'Libre Baskerville', serif;
+      cursor: pointer;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* === LETTER INTERNALS === */
+    .text {
+      font-family: 'Lora', serif;
+      font-size: 15.5px;
+      color: var(--text);
+      line-height: 1.9;
+      text-align: center;
+    }
+
+    .text .incipit {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      font-family: 'Libre Baskerville', serif;
+    }
+
+    .text .verse {
+      font-style: italic;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .text .salutation {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 17px;
+      margin-bottom: 16px;
+      text-align: center;
+      color: #1e6b3a;
+    }
+
+    .text .closing {
+      margin-top: 20px;
+      font-weight: 700;
+      font-style: italic;
+      text-align: center;
+      font-size: 17px;
+
+    }
+
+    .text .sign {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #1e6b3a;
+      text-align: center;
+    }
+
+    /* === SIMPLE DIVIDER === */
+    .text .simple-divider {
+      border: none;
+      border-top: 1px solid rgba(30, 107, 58, 0.35);
+      margin: 22px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🪔 Rising Lanterns -->
+  <div class="lantern" style="left:  6%; animation-delay: 0s;   animation-duration: 12s;">🪔</div>
+  <div class="lantern" style="left: 18%; animation-delay: 3s;   animation-duration: 15s;">🌟</div>
+  <div class="lantern" style="left: 35%; animation-delay: 6s;   animation-duration: 11s;">🪔</div>
+  <div class="lantern" style="left: 52%; animation-delay: 1.5s; animation-duration: 14s;">⭐</div>
+  <div class="lantern" style="left: 68%; animation-delay: 4s;   animation-duration: 13s;">🪔</div>
+  <div class="lantern" style="left: 80%; animation-delay: 8s;   animation-duration: 10s;">🌟</div>
+  <div class="lantern" style="left: 93%; animation-delay: 2.5s; animation-duration: 16s;">🪔</div>
+
+  <!-- Moonlight Glow -->
+  <div class="moon-glow"></div>
+
+  <!-- Firefly Motes -->
+  <div class="mote" style="left: 15%; animation-delay: 0s;"></div>
+  <div class="mote" style="left: 40%; animation-delay: 6s;"></div>
+  <div class="mote" style="left: 65%; animation-delay: 12s;"></div>
+  <div class="mote" style="left: 88%; animation-delay: 4s;"></div>
+
+  <!-- Envelope and Letter -->
+  <div class="container">
+    <p>"Warkah Syawal Buat Kasih Anysa yang Tercinta"</p>
+    <span>Break the seal to open</span>
+
+    <div class="envelope-wrapper">
+      <div class="seam-left"></div>
+      <div class="seam-right"></div>
+
+      <div class="envelope">
+        <div class="letter">
+          <p class="hint-text">[Click to read]</p>
+          <div class="text">
+            <p class="incipit">Forgiveness &amp; Blessings</p>
+            <p class="salutation">Eid Mubarak</p>
+            <p class="verse">May this Eid bring a thousand blessings your way...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="seal" title="Break the Seal"></div>
+    </div>
+  </div>
+
+  <script>
+    const seal = document.querySelector(".seal");
+    const envelopeWrapper = document.querySelector(".envelope-wrapper");
+    const letter = document.querySelector(".letter");
+    const textBlock = document.querySelector(".text");
+
+    const previewHTML = `
+  <p class="incipit">Forgiveness &amp; Blessings</p> 
+  <p class="salutation">Eid Mubarak</p>
+  <p class="verse">May this Eid bring a thousand blessings your way...</p>
+`;
+
+    const fullHTML = `
+  <p class="incipit">Aidilfitri 1447H</p>
+  <p class="salutation">Buat Pemilik Nama Kasih Anysa yang Sentiasa Dalam Doa,</p>
+
+  <p class="verse">
+    Hadirnya ucapan ini bukanlah sekadar susunan kata, tetapi sebuah
+    jambatan buat bicara kecil yang lahir dari getaran nurani. 
+  </p>  
+  <p class="verse">
+    Assalamualaikum — sempena 
+    Syawal yang mulia ini, saya ingin meluahkan apa yang selama ini
+    terpendam di sudut hati, khas buat Kasih Anysa yang tercinta,
+    serta buat keluarga yang telah menyambut kehadiran saya
+    dengan penuh saksama.
+  </p>
+  <p class="verse">
+    Saya menyusun sepuluh jari memohon ampun dan maaf atas segala
+    salah silap dari hujung rambut hingga ke hujung kaki.
+  </p>
+  <p class="verse">
+    Buat Kasih Anysa dan keluarga — halalkanlah segala kebaikan,
+    dan doa yang telah dicurahkan. Segala keberkatan
+    yang mengalir melalui restu kalian adalah kekuatan
+    untuk melangkah di dunia yang luas ini. Restuilah setiap jalan yang
+    bakal dilalui, kerana keredhaan kalian adalah azimat yang paling
+    berharga selain keluarga aku untuk kita memulakan fasa yang baru.
+  </p>
+
+  <hr class="simple-divider">
+
+  <p class="verse">
+    On this blessing of a day, as well, we bid farewell to the sacred nights of Ramadan
+    and the blessed night of Al-Qadr. May we cherish the unwavering battle
+    of the self in pursuit of His mercy, as we return to our truest nature, Firasat.
+  </p>
+  <p class="verse">
+    From the sincerest corner of this heart, I ask for your forgiveness —
+    amidst the journey of finding us the right path.
+  </p>
+  <p class="verse">
+    I understand the wrath and complication I may have brought along the way.
+    What seemed natural to me may not have been so for you. At times, you may
+    have found things baffling in ways I could not see. Know this — I was
+    always meant to bring you toward glory, toward living the best life.
+  </p>
+  <p class="verse">
+    May this Eid strengthen the bonds between us, nourish the friendship
+    we have built, and open wider doors of goodness — for you, for your
+    family, and for all whom we hold dear.
+  </p>
+  <p class="verse">
+    May every step you take be guided by His light, every prayer answered
+    in His time, and every dream fulfilled within the beauty of His plan. 
+    Thus, Kasih will forever be in my prayer.  
+  </p>
+
+  <hr class="simple-divider">
+
+  <p class="verse" style="text-align:center; font-style:italic; line-height:2.2;">
+    Dalam kerendahan hati, ada ketinggian budi.<br>
+    Dalam kemiskinan harta, ada kekayaan jiwa.<br>
+    Dalam kelembutan lidah, ada juga keterlanjuran kata.<br>
+    Dalam gurau senda, sudah tentu ada khilaf dan dosa.
+  </p>
+
+  <p class="closing">Jaga Diri, Selamat Hari Raya 🌙</p>
+  <p class="sign" style="color:black;">Setulus nurani,<br>Danish Danial</p>
+`;
+
+    seal.addEventListener("click", () => {
+      envelopeWrapper.classList.toggle("flap");
+    });
+
+    let isOpen = false;
+    letter.addEventListener("click", () => {
+      if (!envelopeWrapper.classList.contains("flap")) return;
+
+      isOpen = !isOpen;
+      if (isOpen) {
+        letter.classList.add("open-letter");
+        textBlock.innerHTML = fullHTML;
+      } else {
+        letter.classList.remove("open-letter");
+        textBlock.innerHTML = previewHTML;
+      }
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonnet — Fourteen Lines to You</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #f5ead8;
+  --bg-gradient: radial-gradient(ellipse at 60% 0%, #6b3a2a, #3d1f0f, #1a0c05);
+  --envelope-light: #8c5c34;
+  --envelope-mid: #b07444;
+  --envelope-dark: #6b4225;
+  --seal: #c07a2e;
+  --text: #3d1f0f;
+  --shadow: rgba(0, 0, 0, 0.55);
+  --accent: #d4933a;
+  --leaf-1: #c44b1a;
+  --leaf-2: #e08020;
+  --leaf-3: #9c3f10;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-gradient);
+  overflow: hidden;
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* === 🍂 Falling Leaves === */
+.leaf {
+  position: absolute;
+  top: -60px;
+  font-size: 22px;
+  opacity: 0;
+  animation: fallLeaf 12s ease-in infinite;
+  user-select: none;
+  filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.3));
+}
+
+@keyframes fallLeaf {
+  0%   { opacity: 0;   transform: translateY(0)     rotate(0deg)   translateX(0); }
+  10%  { opacity: 0.9; }
+  50%  { opacity: 0.8; transform: translateY(50vh)  rotate(180deg) translateX(60px); }
+  90%  { opacity: 0.5; }
+  100% { opacity: 0;   transform: translateY(110vh) rotate(360deg) translateX(-40px); }
+}
+
+/* === Warm Candlelight Glow === */
+.candle-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 350px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(210, 120, 40, 0.18), transparent 70%);
+  pointer-events: none;
+  animation: flicker 4s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+  0%   { opacity: 1;   transform: translateX(-50%) scaleX(1); }
+  50%  { opacity: 0.7; transform: translateX(-50%) scaleX(1.05); }
+  100% { opacity: 0.9; transform: translateX(-50%) scaleX(0.95); }
+}
+
+/* === Dust Motes === */
+.mote {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(230, 180, 100, 0.35);
+  border-radius: 50%;
+  animation: driftMote 18s linear infinite;
+}
+
+@keyframes driftMote {
+  0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+}
+
+/* === ENVELOPE CONTAINER === */
+.container {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  animation: showUp 2.5s ease forwards;
+  animation-delay: 0.6s;
+  color: #e0c8a0;
+  text-align: center;
+  gap: 16px;
+}
+
+.container p {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 16px;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.container span {
+  font-size: 13px;
+  opacity: 0.55;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@keyframes showUp {
+  to { opacity: 1; }
+}
+
+/* === ENVELOPE === */
+.envelope-wrapper {
+  position: relative;
+  background: var(--envelope-light);
+  box-shadow:
+    0 20px 60px var(--shadow),
+    inset 0 0 40px rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 240px;
+}
+
+/* Decorative inner seam lines */
+.envelope-wrapper .seam-left,
+.envelope-wrapper .seam-right {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 60%;
+  background: rgba(255,255,255,0.07);
+  z-index: 5;
+  pointer-events: none;
+}
+.envelope-wrapper .seam-left  { left: 50%; transform: translateX(-80px) rotate(35deg); transform-origin: bottom; }
+.envelope-wrapper .seam-right { right: 50%; transform: translateX(80px) rotate(-35deg); transform-origin: bottom; }
+
+/* FLAP */
+.envelope::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  border-top: 135px solid var(--envelope-mid);
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+/* BODY */
+.envelope::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0;
+  border-top: 135px solid transparent;
+  border-left: 160px solid var(--envelope-dark);
+  border-right: 160px solid var(--envelope-dark);
+  border-bottom: 105px solid var(--envelope-dark);
+  z-index: 2;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* === LETTER === */
+.letter {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 72%;
+  height: 96%;
+  box-sizing: border-box;
+  background: var(--primary);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  border-radius: 3px;
+  box-shadow: 0 0 14px rgba(0,0,0,0.3);
+  padding: 16px 14px;
+  text-align: center;
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid rgba(200, 150, 80, 0.4);
+}
+
+.letter .hint-text {
+  color: #b8906a;
+  font-size: 11px;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* === WAX SEAL / QUILL BUTTON === */
+.seal {
+  position: absolute;
+  top: 118px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 54px;
+  height: 54px;
+  background: radial-gradient(circle at 38% 32%, #e8b870, var(--seal), #7a4a10);
+  border-radius: 50%;
+  z-index: 4;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s, opacity 0.4s ease 0.4s;
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.55),
+    inset 0 2px 4px rgba(255,255,255,0.25),
+    0 0 0 3px rgba(180,120,50,0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.seal:hover {
+  transform: translateX(-50%) scale(1.12) rotate(8deg);
+  box-shadow: 0 8px 28px rgba(210, 147, 58, 0.5);
+}
+
+.seal::after {
+  content: "🪶";
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+/* === OPEN STATES === */
+.flap .envelope::before {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+.flap .letter {
+  bottom: 115px;
+  transform: translateX(-50%) scale(1.15);
+  box-shadow: 0 -10px 25px rgba(0,0,0,0.4);
+}
+.flap .seal {
+  transform: translateX(-50%) translateY(45px) scale(0);
+  opacity: 0;
+}
+
+/* === FULLSCREEN LETTER === */
+.letter.open-letter {
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  width: 82vw;
+  max-width: 540px;
+  height: auto;
+  min-height: 70vh;
+  max-height: 92vh;
+  background: var(--primary);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 29px,
+      rgba(180, 130, 70, 0.12) 29px,
+      rgba(180, 130, 70, 0.12) 30px
+    );
+  padding: 55px 42px 42px;
+  z-index: 999;
+  box-shadow: 0 0 100px rgba(0,0,0,0.7), 0 0 0 6px var(--accent);
+  overflow-y: auto;
+  border-radius: 4px;
+  transition: all 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: parchmentOpen 0.5s ease forwards;
+  border: none;
+  text-align: left;
+}
+
+@keyframes parchmentOpen {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scaleY(0.6); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scaleY(1); }
+}
+
+.letter.open-letter .hint-text { display: none; }
+
+.letter.open-letter::before {
+  content: "Sonnet";
+  font-family: 'IM Fell English', serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--text);
+  display: block;
+  margin-bottom: 4px;
+  text-align: center;
+  letter-spacing: 3px;
+}
+
+.letter.open-letter::after {
+  content: "✕  Close";
+  position: fixed;
+  top: 18px;
+  right: 28px;
+  font-size: 13px;
+  color: #a08060;
+  font-family: 'Libre Baskerville', serif;
+  cursor: pointer;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* === LETTER INTERNALS === */
+.text {
+  font-family: 'IM Fell English', serif;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+  text-align: center;
+}
+
+.text .incipit {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--accent);
+  border-bottom: 1px solid rgba(200, 150, 80, 0.4);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.text .verse {
+  font-style: italic;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.text .couplet {
+  margin-top: 16px;
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  font-size: 17px;
+}
+
+.text .sign {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #6b4225;
+}
+
+</style>
+</head>
+<body>
+
+<!-- 🍂 Falling Leaves -->
+<div class="leaf" style="left:  7%; animation-delay: 0s;   animation-duration: 10s; font-size: 18px;">🍂</div>
+<div class="leaf" style="left: 20%; animation-delay: 2.5s; animation-duration: 14s; font-size: 24px;">🍁</div>
+<div class="leaf" style="left: 38%; animation-delay: 5s;   animation-duration: 11s; font-size: 16px;">🍂</div>
+<div class="leaf" style="left: 55%; animation-delay: 1.2s; animation-duration: 13s; font-size: 20px;">🍁</div>
+<div class="leaf" style="left: 70%; animation-delay: 4s;   animation-duration: 12s; font-size: 22px;">🍂</div>
+<div class="leaf" style="left: 85%; animation-delay: 7s;   animation-duration: 9s;  font-size: 16px;">🍁</div>
+<div class="leaf" style="left: 92%; animation-delay: 3s;   animation-duration: 15s; font-size: 19px;">🍂</div>
+
+<!-- Candlelight Glow -->
+<div class="candle-glow"></div>
+
+<!-- Dust Motes -->
+<div class="mote" style="left: 20%; animation-delay: 0s;"></div>
+<div class="mote" style="left: 45%; animation-delay: 5s;"></div>
+<div class="mote" style="left: 70%; animation-delay: 10s;"></div>
+<div class="mote" style="left: 85%; animation-delay: 3s;"></div>
+
+<!-- Envelope and Letter -->
+<div class="container">
+  <p>"In words too old for clocks to keep..."</p>
+  <span>Break the quill seal to unfold</span>
+
+  <div class="envelope-wrapper">
+    <div class="seam-left"></div>
+    <div class="seam-right"></div>
+
+    <div class="envelope">
+      <div class="letter">
+        <p class="hint-text">[Unfurl the parchment]</p>
+        <div class="text">
+          <p class="incipit">Fourteen Lines to You</p>
+          <p class="verse">Shall I compare thee to a summer's day?</p>
+          <p class="verse">Thou art more lovely and more temperate...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seal" title="Break the Seal"></div>
+  </div>
+</div>
+
+<!-- === FULLSCREEN LETTER CONTENT (swapped on open) === -->
+<!-- Note: content is embedded in .text for progressive reveal -->
+
+<script>
+const seal = document.querySelector(".seal");
+const envelopeWrapper = document.querySelector(".envelope-wrapper");
+const letter = document.querySelector(".letter");
+const textBlock = document.querySelector(".text");
+
+const previewHTML = `
+  <p class="incipit">Fourteen Lines to You</p>
+  <p class="verse">Shall I compare thee to a summer's day?</p>
+  <p class="verse">Thou art more lovely and more temperate...</p>
+`;
+
+const fullHTML = `
+  <p class="incipit">Sonnet — Fourteen Lines to You</p>
+  <p class="verse">Shall I compare thee to a summer's day?</p>
+  <p class="verse">Thou art more lovely and more temperate:</p>
+  <p class="verse">Rough winds do shake the darling buds of May,</p>
+  <p class="verse">And summer's lease hath all too short a date.</p>
+  <br>
+  <p class="verse">Sometime too hot the eye of heaven shines,</p>
+  <p class="verse">And often is his gold complexion dimm'd;</p>
+  <p class="verse">And every fair from fair sometime declines,</p>
+  <p class="verse">By chance or nature's changing course untrimm'd.</p>
+  <br>
+  <p class="verse">But thy eternal summer shall not fade,</p>
+  <p class="verse">Nor lose possession of that fair thou owest;</p>
+  <p class="verse">Nor shall death brag thou wander'st in his shade,</p>
+  <p class="verse">When in eternal lines to time thou growest.</p>
+  <p class="couplet">So long as men can breathe or eyes can see,</p>
+  <p class="couplet">So long lives this, and this gives life to thee.</p>
+  <p class="sign">— W. Shakespeare, kept for you alone.</p>
+`;
+
+seal.addEventListener("click", () => {
+  envelopeWrapper.classList.toggle("flap");
+});
+
+let isOpen = false;
+letter.addEventListener("click", () => {
+  if (!envelopeWrapper.classList.contains("flap")) return;
+
+  isOpen = !isOpen;
+  if (isOpen) {
+    letter.classList.add("open-letter");
+    textBlock.innerHTML = fullHTML;
+  } else {
+    letter.classList.remove("open-letter");
+    textBlock.innerHTML = previewHTML;
+  }
+});
+</script>
+
+</body>
+</html>

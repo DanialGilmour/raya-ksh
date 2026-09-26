@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍵 Mathca Match-up Invitation!</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #a7ffb6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffffc0;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 90%;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #5d4037;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+
+        h2 {
+            color: #8d6e63;
+            font-weight: normal;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .details p {
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+
+        /* Flexbox container for the forms/buttons */
+        .button-group-wrapper {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            gap: 15px; /* Space between buttons */
+        }
+
+        /* Style for the individual forms to take up equal space */
+        .rsvp-form {
+            flex-grow: 1;
+            /* Ensures form doesn't add extra margin/padding */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Styling for the submit buttons */
+        .rsvp-button {
+            width: 100%; /* Make button fill its form container */
+            padding: 12px 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.1s;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-weight: bold;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .accept {
+            background-color: #4CAF50; /* Green for Accept */
+        }
+
+        .unaccept {
+            background-color: #f44336; /* Red for Unaccept */
+        }
+
+        .accept:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .unaccept:hover {
+            background-color: #da190b;
+            transform: translateY(-2px);
+        }
+
+        .coffee-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: #5d4037;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .button-group-wrapper {
+                flex-direction: column; /* Stack buttons on very small screens */
+            }
+            .rsvp-form {
+                margin-bottom: 15px; /* Space between stacked forms */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="coffee-icon">🍵</div>
+        <h1>Let's Matcha-up!</h1>
+        <h2>Coffee, Matcha, and Conversation.</h2>
+
+        <div class="details">
+            <p><strong>WHERE:</strong> maybematcha Tamarind Square</p>
+            <p><strong>WHEN:</strong> 11/12 October 2025 (Subject to your availability)</p>
+            <p><strong>TIME:</strong> 8.00AM - YTD</p>
+            <p><strong>THINGS TO PREPARE:</strong> laptop & any other tools for your work</p>
+        </div>
+
+        <div class="button-group-wrapper">
+            <form 
+                action="https://formspree.io/f/xanppedv" 
+                method="POST" 
+                class="rsvp-form"
+            >
+                <input type="hidden" name="RSVP" value="ACCEPTED - I'll be there!">
+                <input 
+                    type="submit" 
+                    class="rsvp-button accept" 
+                    value="🎉 I'll Be There!" 
+                >
+            </form>
+
+            <form 
+                action="https://formspree.io/f/xanppedv" 
+                method="POST"
+                class="rsvp-form"
+            >
+                <input type="hidden" name="RSVP" value="DECLINED - Cannot make it.">
+                <input 
+                    type="submit" 
+                    class="rsvp-button unaccept" 
+                    value="😞 Can't Make It"
+                >
+            </form>
+        </div>
+
+        <p style="margin-top: 30px; font-style: italic; color: #777;">
+            Click a button to let me know! Feel free to deliver your concerns through whatsapp
+        </p>
+    </div>
+    
+</body>
+</html>
